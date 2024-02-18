@@ -69,6 +69,73 @@ class HashTable {
     //0(n)
     return this.table[idx].find((x) => x[0] === key)[1];
   };
+
+  has = (key) => {
+    const idx = hashStringToInt(key, this.table.length);
+    if (!this.table[idx]) {
+      return false;
+    }
+    return this.table[idx].some(([k, _]) => k === key);
+  };
+
+  remove = (key) => {
+    const idx = hashStringToInt(key, this.table.length);
+    if (!this.table[idx]) {
+      return false;
+    }
+    const indexToRemove = this.table[idx].findIndex(([k, _]) => k === key);
+    if (indexToRemove === -1) {
+      return false;
+    }
+    this.table[idx].splice(indexToRemove, 1);
+    this.numItems--;
+    return true;
+  };
+
+  length = () => {
+    return this.numItems;
+  };
+
+  clear = () => {
+    this.table = new Array(this.table.length);
+    this.numItems = 0;
+  };
+
+  keys = () => {
+    const keysArray = [];
+    this.table.forEach((item) => {
+      if (item) {
+        item.forEach(([key, _]) => {
+          keysArray.push(key);
+        });
+      }
+    });
+    return keysArray;
+  };
+
+  values = () => {
+    const valuesArray = [];
+    this.table.forEach((item) => {
+      if (item) {
+        item.forEach(([_, value]) => {
+          valuesArray.push(value);
+        });
+      }
+    });
+    return this.valuesArray;
+  };
+
+  entries = () => {
+    const entriesArray = [];
+    this.table.forEach((item) => {
+      if (item) {
+        item.forEach(([key, value]) => {
+          entriesArray.push([key, value]);
+        });
+      }
+    });
+    return entriesArray;
+  };
 }
 
 const myTable = new HashTable();
@@ -83,3 +150,5 @@ console.log(myTable.getItem("lastName"));
 console.log(myTable.getItem("age"));
 console.log(myTable.getItem("dob"));
 console.log(myTable.table.length);
+
+console.log(myTable.entries());
